@@ -1,3 +1,4 @@
+# App constants
 TILEWIDTH = 8
 TILEHEIGHT = 8
 NROWS = 36
@@ -6,13 +7,22 @@ SCREENWIDTH = NCOLS * TILEWIDTH
 SCREENHEIGHT = NROWS * TILEHEIGHT
 SCREENSIZE = (SCREENWIDTH, SCREENHEIGHT)
 
+# Object constants
 PACMAN = 0
 PELLET = 1
 POWER_PELLET = 2
+GHOST = 3
 
+# Directional constants
 STOP = 0
 UP = 1
 DOWN = -1
 LEFT = 2
 RIGHT = -2
 PORTAL = 3
+
+# Ghost mode constants
+SCATTER = 0
+CHASE = 1
+FRIGHT = 2
+SPAWN = 3

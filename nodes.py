@@ -30,6 +30,7 @@ class NodeGroup(object):
         self.create_node_table(data)
         self.connect_horizontally(data)
         self.connect_vertically(data)
+        self.home_key = None
 
     # Reads the maze file
     def read_maze_file(self, text_file):
@@ -104,6 +105,20 @@ class NodeGroup(object):
     def get_starting_temp_node(self):
         nodes = list(self.nodes_LUT.values())
         return nodes[0]
+
+    # These two functions create home nodes for the ghosts and connects them to the rest of the nodes
+    def create_home_nodes(self, xoffset, yoffset):
+        home_data = np.array([['X','X','+','X','X'], ['X','X','.','X','X'], ['+','X','.','X','+'], ['+','.','+','.','+'], ['+','X','X','X','+']])
+        self.create_node_table(home_data, xoffset, yoffset)
+        self.connect_horizontally(home_data, xoffset, yoffset)
+        self.connect_vertically(home_data, xoffset, yoffset)
+        self.home_key = self.construct_key(xoffset + 2, yoffset)
+        return self.home_key
+
+    def connect_home_nodes(self, home_key, other_key, direction):
+        key = self.construct_key(*other_key)
+        self.nodes_LUT[home_key].neighbors[direction] = self.nodes_LUT[key]
+        self.nodes_LUT[key].neighbors[direction * -1] = self.nodes_LUT[home_key]
 
     def draw(self):
         for node in self.nodes_LUT.values():
