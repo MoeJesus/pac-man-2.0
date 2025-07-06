@@ -12,6 +12,10 @@ PACMAN = 0
 PELLET = 1
 POWER_PELLET = 2
 GHOST = 3
+BLINKY = 4
+PINKY = 5
+INKY = 6
+CLYDE = 7
 
 # Directional constants
 STOP = 0

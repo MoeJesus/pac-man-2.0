@@ -10,14 +10,19 @@ class Entity(object):
         self.directions = {STOP:Vector2(), UP:Vector2(0, -1), DOWN:Vector2(0, 1), LEFT:Vector2(-1, 0), RIGHT:Vector2(1,0)}
         self.direction = STOP
         self.set_speed(1)
-        self.collide_radius = 5
-        self.node = node
-        self.set_position()
-        self.target = node
+        self.collide_radius = 4
         self.visible = True
         self.disable_portal = False
         self.goal = None
         self.direction_method = self.random_direction
+        self.set_start_node(node)
+
+    # Sets the starting position
+    def set_start_node(self, node):
+        self.node = node
+        self.start_node = node
+        self.target = node
+        self.set_position()
 
     # Copies the node position to the entity's position
     def set_position(self):
@@ -101,5 +106,20 @@ class Entity(object):
             self.set_position()
 
     def draw(self):
+        sprite_x = self.entity_image[0]
+        sprite_y = self.entity_image[1]
+        width = self.entity_image[2]
+        height = self.entity_image[3]
+
         if self.visible:
-            pyxel.circ(self.position.x + (TILEWIDTH / 2), self.position.y + (TILEWIDTH / 2), 6, 8)
+            if self.direction == UP:
+                sprite_x = ((pyxel.frame_count // 8 % 2) + 2) * 16
+            elif self.direction == DOWN:
+                sprite_x = ((pyxel.frame_count // 8 % 2) + 4) * 16
+            elif self.direction == LEFT:
+                sprite_x = pyxel.frame_count // 8 % 2 * 16
+                width = width * -1
+            elif self.direction == RIGHT:
+                sprite_x = pyxel.frame_count // 8 % 2 * 16
+
+            pyxel.blt(self.position.x - (TILEWIDTH / 2), self.position.y - (TILEWIDTH / 2), 0, sprite_x, sprite_y, width, height, 0)

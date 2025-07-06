@@ -9,6 +9,7 @@ class Pacman(Entity):
         Entity.__init__(self, node)
         self.name = PACMAN
         self.player_image = [32, 48, 16, 16]  # u, v, w, h
+        self.direction = LEFT
 
     # Checks to see if a key is inputted for movement
     def get_valid_key(self):
@@ -26,7 +27,7 @@ class Pacman(Entity):
     def collide_check(self, other):
         d = self.position - other.position
         d_squared = d.magnitude_squared()
-        r_squared = (self.collide_radius + other.collide_radius)**2
+        r_squared = (self.collide_radius + other.collide_radius) ** 2
         if d_squared <= r_squared:
             return True
         return False
