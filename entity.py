@@ -28,6 +28,12 @@ class Entity(object):
     def set_position(self):
         self.position = self.node.position.copy()
 
+    # Allows entities to be set between two nodes
+    def set_between_nodes(self, direction):
+        if self.node.neighbors[direction] is not None:
+            self.target = self.node.neighbors[direction]
+            self.position = (self.node.position + self.target.position) / 2.0
+
     # These two functions check to see if the entity can move and go a certain direction
     def valid_direction(self, direction):
         if direction is not STOP:

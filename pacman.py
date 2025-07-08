@@ -10,6 +10,7 @@ class Pacman(Entity):
         self.name = PACMAN
         self.player_image = [32, 48, 16, 16]  # u, v, w, h
         self.direction = LEFT
+        self.set_between_nodes(LEFT)
 
     # Checks to see if a key is inputted for movement
     def get_valid_key(self):

@@ -9,7 +9,7 @@ class Pellet(object):
     def __init__(self, row, column):
         self.name = PELLET
         self.position = Vector2(column * TILEWIDTH, row * TILEHEIGHT)
-        self.sprite_x = 16
+        self.sprite_x = 8
         self.sprite_y = 0
         self.collide_radius = 2
         self.points = 10
