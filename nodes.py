@@ -41,23 +41,23 @@ class NodeGroup(object):
         return x * TILEWIDTH, y * TILEHEIGHT
 
     # Creates the node table so that they are arranged on the tilemap
-    def create_node_table(self, data, xoffset = 0, yoffset = 0):
+    def create_node_table(self, data, xoffset=0, yoffset=0):
         for row in list(range(data.shape[0])):
             for col in list(range(data.shape[1])):
                 if data[row][col] in self.node_symbols:
-                    x, y = self.construct_key(col + xoffset, row + yoffset)
+                    x, y = self.construct_key(col+xoffset, row+yoffset)
                     self.nodes_LUT[(x, y)] = Node(x, y)
 
     # Connects neighbor nodes that share the same x value together
-    def connect_horizontally(self, data, xoffset = 0, yoffset = 0):
+    def connect_horizontally(self, data, xoffset=0, yoffset=0):
         for row in list(range(data.shape[0])):
             key = None
             for col in list(range(data.shape[1])):
                 if data[row][col] in self.node_symbols:
                     if key is None:
-                        key = self.construct_key(col + xoffset, row + yoffset)
+                        key = self.construct_key(col+xoffset, row+yoffset)
                     else:
-                        other_key = self.construct_key(col + xoffset, row + yoffset)
+                        other_key = self.construct_key(col+xoffset, row+yoffset)
                         self.nodes_LUT[key].neighbors[RIGHT] = self.nodes_LUT[other_key]
                         self.nodes_LUT[other_key].neighbors[LEFT] = self.nodes_LUT[key]
                         key = other_key
@@ -65,16 +65,16 @@ class NodeGroup(object):
                     key = None
 
     # Connects neighbor nodes that share the same y value together
-    def connect_vertically(self, data, xoffset = 0, yoffset = 0):
+    def connect_vertically(self, data, xoffset=0, yoffset=0):
         data_trans = data.transpose()
         for col in list(range(data_trans.shape[0])):
             key = None
             for row in list(range(data_trans.shape[1])):
                 if data_trans[col][row] in self.node_symbols:
                     if key is None:
-                        key = self.construct_key(col + xoffset, row + yoffset)
+                        key = self.construct_key(col+xoffset, row+yoffset)
                     else:
-                        other_key = self.construct_key(col + xoffset, row + yoffset)
+                        other_key = self.construct_key(col+xoffset, row+yoffset)
                         self.nodes_LUT[key].neighbors[DOWN] = self.nodes_LUT[other_key]
                         self.nodes_LUT[other_key].neighbors[UP] = self.nodes_LUT[key]
                         key = other_key
@@ -112,13 +112,13 @@ class NodeGroup(object):
         self.create_node_table(home_data, xoffset, yoffset)
         self.connect_horizontally(home_data, xoffset, yoffset)
         self.connect_vertically(home_data, xoffset, yoffset)
-        self.home_key = self.construct_key(xoffset + 2, yoffset)
+        self.home_key = self.construct_key(xoffset+2, yoffset)
         return self.home_key
 
     def connect_home_nodes(self, home_key, other_key, direction):
         key = self.construct_key(*other_key)
         self.nodes_LUT[home_key].neighbors[direction] = self.nodes_LUT[key]
-        self.nodes_LUT[key].neighbors[direction * -1] = self.nodes_LUT[home_key]
+        self.nodes_LUT[key].neighbors[direction*-1] = self.nodes_LUT[home_key]
 
     def draw(self):
         for node in self.nodes_LUT.values():

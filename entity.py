@@ -128,4 +128,4 @@ class Entity(object):
             elif self.direction == RIGHT:
                 sprite_x = pyxel.frame_count // 8 % 2 * 16
 
-            pyxel.blt(self.position.x - (TILEWIDTH / 2), self.position.y - (TILEWIDTH / 2), 0, sprite_x, sprite_y, width, height, 0)
+            pyxel.blt(self.position.x-(TILEWIDTH/2), self.position.y-(TILEWIDTH/2), 0, sprite_x, sprite_y, width, height, 0)

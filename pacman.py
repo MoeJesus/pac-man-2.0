@@ -28,7 +28,7 @@ class Pacman(Entity):
     def collide_check(self, other):
         d = self.position - other.position
         d_squared = d.magnitude_squared()
-        r_squared = (self.collide_radius + other.collide_radius) ** 2
+        r_squared = (self.collide_radius + other.collide_radius)**2
         if d_squared <= r_squared:
             return True
         return False
@@ -68,22 +68,23 @@ class Pacman(Entity):
         width = self.player_image[2]
         height = self.player_image[3]
 
-        if self.direction == UP:
-            sprite_x = pyxel.frame_count // 4 % 4 * 16
-            sprite_y = 32
-        if self.direction == DOWN:
-            sprite_x = pyxel.frame_count // 4 % 4 * 16
-            sprite_y = 32
-            height = height * -1
-        if self.direction == LEFT:
-            sprite_x = pyxel.frame_count // 4 % 4 * 16
-            sprite_y = 16
-            width = width * -1
-        if self.direction == RIGHT:
-            sprite_x = pyxel.frame_count // 4 % 4 * 16
-            sprite_y = 16
-        if self.direction == STOP:
-            sprite_x = 48
-            sprite_y = 16
+        if self.visible:
+            if self.direction == UP:
+                sprite_x = pyxel.frame_count // 4 % 4 * 16
+                sprite_y = 32
+            if self.direction == DOWN:
+                sprite_x = pyxel.frame_count // 4 % 4 * 16
+                sprite_y = 32
+                height = height * -1
+            if self.direction == LEFT:
+                sprite_x = pyxel.frame_count // 4 % 4 * 16
+                sprite_y = 16
+                width = width * -1
+            if self.direction == RIGHT:
+                sprite_x = pyxel.frame_count // 4 % 4 * 16
+                sprite_y = 16
+            if self.direction == STOP:
+                sprite_x = 48
+                sprite_y = 16
             
-        pyxel.blt(self.position.x - (TILEWIDTH / 2), self.position.y - (TILEWIDTH / 2), 0, sprite_x, sprite_y, width, height, 0)
+            pyxel.blt(self.position.x-(TILEWIDTH/2), self.position.y-(TILEWIDTH/2), 0, sprite_x, sprite_y, width, height, 0)
