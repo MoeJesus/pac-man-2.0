@@ -8,7 +8,7 @@ import numpy as np
 class Pellet(object):
     def __init__(self, row, column):
         self.name = PELLET
-        self.position = Vector2(column*TILEWIDTH, row*TILEHEIGHT)
+        self.position = Vector2(column*TILE_WIDTH, row*TILE_HEIGHT)
         self.sprite_x = 8
         self.sprite_y = 0
         self.collide_radius = 2
@@ -18,7 +18,7 @@ class Pellet(object):
     def draw(self):
         if self.visible:
             p = self.position.as_int()
-            pyxel.blt(self.position.x, self.position.y, 0, self.sprite_x, self.sprite_y, TILEWIDTH, TILEHEIGHT)
+            pyxel.blt(self.position.x, self.position.y, 0, self.sprite_x, self.sprite_y, TILE_WIDTH, TILE_HEIGHT)
 
 
 # Using the pellet class, power pellets are also created

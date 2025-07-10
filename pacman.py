@@ -8,7 +8,7 @@ class Pacman(Entity):
     def __init__(self, node):
         Entity.__init__(self, node)
         self.name = PACMAN
-        self.player_image = [32, 48, 16, 16]  # u, v, w, h
+        self.entity_image = [0, 16]  # u, v
         self.direction = LEFT
         self.set_between_nodes(LEFT)
 
@@ -61,30 +61,3 @@ class Pacman(Entity):
         else:
             if self.opposite_direction(direction):
                 self.reverse_direction()
-
-    def draw(self):
-        sprite_x = self.player_image[0]
-        sprite_y = self.player_image[1]
-        width = self.player_image[2]
-        height = self.player_image[3]
-
-        if self.visible:
-            if self.direction == UP:
-                sprite_x = pyxel.frame_count // 4 % 4 * 16
-                sprite_y = 32
-            if self.direction == DOWN:
-                sprite_x = pyxel.frame_count // 4 % 4 * 16
-                sprite_y = 32
-                height = height * -1
-            if self.direction == LEFT:
-                sprite_x = pyxel.frame_count // 4 % 4 * 16
-                sprite_y = 16
-                width = width * -1
-            if self.direction == RIGHT:
-                sprite_x = pyxel.frame_count // 4 % 4 * 16
-                sprite_y = 16
-            if self.direction == STOP:
-                sprite_x = 48
-                sprite_y = 16
-            
-            pyxel.blt(self.position.x-(TILEWIDTH/2), self.position.y-(TILEWIDTH/2), 0, sprite_x, sprite_y, width, height, 0)

@@ -38,7 +38,7 @@ class NodeGroup(object):
 
     # Converts rows and columns to pixel values
     def construct_key(self, x, y):
-        return x * TILEWIDTH, y * TILEHEIGHT
+        return x * TILE_WIDTH, y * TILE_HEIGHT
 
     # Creates the node table so that they are arranged on the tilemap
     def create_node_table(self, data, xoffset=0, yoffset=0):

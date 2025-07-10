@@ -11,7 +11,7 @@ class Fruit(Entity):
         self.timer = 0
         self.destroy = False
         self.points = 100
-        self.entity_image = [0, 112, 16, 16]
+        self.entity_image = [0, 112]
         self.set_between_nodes(RIGHT)
 
     def update(self):

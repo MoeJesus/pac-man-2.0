@@ -63,7 +63,7 @@ class Entity(object):
     def goal_direction(self, directions):
         distances = []
         for direction in directions:
-            vec = self.node.position + self.directions[direction] * TILEWIDTH - self.goal
+            vec = self.node.position + self.directions[direction] * TILE_WIDTH - self.goal
             distances.append(vec.magnitude_squared())
         index = distances.index(min(distances))
         return directions[index]
@@ -93,7 +93,7 @@ class Entity(object):
 
     # Sets the speed of the entity
     def set_speed(self, speed):
-        self.speed = speed * TILEWIDTH / 8
+        self.speed = speed * TILE_WIDTH / 8
 
     def update(self):
         self.position += self.directions[self.direction] * self.speed
@@ -114,18 +114,33 @@ class Entity(object):
     def draw(self):
         sprite_x = self.entity_image[0]
         sprite_y = self.entity_image[1]
-        width = self.entity_image[2]
-        height = self.entity_image[3]
+        width = TILE_WIDTH * 2
+        height = TILE_HEIGHT * 2
 
         if self.visible:
+            if self.name == PACMAN:
+                sprite_x = pyxel.frame_count // 4 % 4 * 16
             if self.direction == UP:
-                sprite_x = ((pyxel.frame_count // 8 % 2) + 2) * 16
+                if self.name == PACMAN:
+                    sprite_y = 32
+                else:
+                    sprite_x = ((pyxel.frame_count // 8 % 2) + 2) * 16
             elif self.direction == DOWN:
-                sprite_x = ((pyxel.frame_count // 8 % 2) + 4) * 16
+                if self.name == PACMAN:
+                    sprite_y = 32
+                    height = height * -1
+                else:
+                    sprite_x = ((pyxel.frame_count // 8 % 2) + 4) * 16
             elif self.direction == LEFT:
-                sprite_x = pyxel.frame_count // 8 % 2 * 16
+                if self.name != PACMAN:
+                    sprite_x = pyxel.frame_count // 8 % 2 * 16
                 width = width * -1
             elif self.direction == RIGHT:
-                sprite_x = pyxel.frame_count // 8 % 2 * 16
+                if self.name != PACMAN:
+                    sprite_x = pyxel.frame_count // 8 % 2 * 16
+            elif self.direction == STOP:
+                if self.name == PACMAN:
+                    sprite_x = 48
+                    sprite_y = 16
 
-            pyxel.blt(self.position.x-(TILEWIDTH/2), self.position.y-(TILEWIDTH/2), 0, sprite_x, sprite_y, width, height, 0)
+            pyxel.blt(self.position.x-(TILE_WIDTH/2), self.position.y-(TILE_WIDTH/2), 0, sprite_x, sprite_y, width, height, 0)

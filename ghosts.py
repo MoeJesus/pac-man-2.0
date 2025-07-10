@@ -64,33 +64,36 @@ class Blinky(Ghost):
     def __init__(self, node, pacman=None, blinky=None):
         Ghost.__init__(self, node, pacman, blinky)
         self.name = BLINKY
-        self.entity_image = [32, 48, 16, 16]
+        self.direction = LEFT
+        self.entity_image = [32, 48]
 
 
 class Pinky(Ghost):
     def __init__(self, node, pacman=None, blinky=None):
         Ghost.__init__(self, node, pacman, blinky)
         self.name = PINKY
-        self.entity_image = [32, 64, 16, 16]
+        self.direction = DOWN
+        self.entity_image = [32, 64]
 
     def scatter(self):
-        self.goal = Vector2(TILEWIDTH*NCOLS, 0)
+        self.goal = Vector2(TILE_WIDTH*NCOLS, 0)
 
     def chase(self):
-        self.goal = self.pacman.position + self.pacman.directions[self.pacman.direction] * TILEWIDTH * 4
+        self.goal = self.pacman.position + self.pacman.directions[self.pacman.direction] * TILE_WIDTH * 4
 
 
 class Inky(Ghost):
     def __init__(self, node, pacman=None, blinky=None):
         Ghost.__init__(self, node, pacman, blinky)
         self.name = INKY
-        self.entity_image = [32, 80, 16, 16]
+        self.direction = UP
+        self.entity_image = [32, 80]
 
     def scatter(self):
-        self.goal = Vector2(TILEWIDTH*NCOLS, TILEHEIGHT*NROWS)
+        self.goal = Vector2(TILE_WIDTH*NCOLS, TILE_HEIGHT*NROWS)
 
     def chase(self):
-        vec1 = self.pacman.position + self.pacman.directions[self.pacman.direction] * TILEWIDTH * 2
+        vec1 = self.pacman.position + self.pacman.directions[self.pacman.direction] * TILE_WIDTH * 2
         vec2 = (vec1 - self.blinky.position) * 2
         self.goal = self.blinky.position + vec2
 
@@ -99,18 +102,19 @@ class Clyde(Ghost):
     def __init__(self, node, pacman=None, blinky=None):
         Ghost.__init__(self, node, pacman, blinky)
         self.name = CLYDE
-        self.entity_image = [32, 96, 16, 16]
+        self.direction = UP
+        self.entity_image = [32, 96]
 
     def scatter(self):
-        self.goal = Vector2(0, TILEHEIGHT*NROWS)
+        self.goal = Vector2(0, TILE_HEIGHT*NROWS)
 
     def chase(self):
         d = self.pacman.position - self.position
         ds = d.magnitude_squared()
-        if ds <= (TILEWIDTH * 8)**2:
+        if ds <= (TILE_WIDTH * 8)**2:
             self.scatter()
         else:
-            self.goal = self.pacman.position + self.pacman.directions[self.pacman.direction] * TILEWIDTH * 4
+            self.goal = self.pacman.position + self.pacman.directions[self.pacman.direction] * TILE_WIDTH * 4
 
 
 class GhostGroup(object):

@@ -9,7 +9,7 @@ from fruit import Fruit
 
 class App:
     def __init__(self):
-        pyxel.init(SCREENWIDTH, SCREENHEIGHT, display_scale=2, title="Pac-Man", fps=60)
+        pyxel.init(SCREEN_WIDTH, SCREEN_HEIGHT, display_scale=2, title="Pac-Man", fps=60)
         pyxel.load("assets/resources.pyxres")
         self.start_game()
         self.pause = Pause(True)
@@ -102,6 +102,7 @@ class App:
         self.ghosts.draw()
 
 
+# Adds the ability to pause the game
 class Pause():
     def __init__(self, paused=False):
         self.paused = paused
@@ -109,9 +110,11 @@ class Pause():
         self.pause_time = None
         self.func = None
 
+    # Switches the state
     def flip(self):
         self.paused = not self.paused
 
+    # Sets the pause effect
     def set_pause(self, player_paused=False, pause_time=None, func=None):
         self.timer = 0
         self.func = func
