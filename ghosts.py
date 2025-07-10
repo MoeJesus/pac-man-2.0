@@ -50,6 +50,13 @@ class Ghost(Entity):
     def normal_mode(self):
         self.set_speed(1)
         self.direction_method = self.goal_direction
+        self.home_node.deny_access(DOWN, self)
+
+    # Resets the ghosts to their original states
+    def reset(self):
+        Entity.reset(self)
+        self.points = 200
+        self.direction_method = self.goal_direction
 
     def update(self):
         self.mode.update()

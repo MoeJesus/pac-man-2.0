@@ -28,6 +28,13 @@ class Entity(object):
     def set_position(self):
         self.position = self.node.position.copy()
 
+    # Resets all entities after the level resets
+    def reset(self):
+        self.set_start_node(self.start_node)
+        self.direction = STOP
+        self.speed = 1
+        self.visible = True
+
     # Allows entities to be set between two nodes
     def set_between_nodes(self, direction):
         if self.node.neighbors[direction] is not None:
@@ -37,8 +44,9 @@ class Entity(object):
     # These two functions check to see if the entity can move and go a certain direction
     def valid_direction(self, direction):
         if direction is not STOP:
-            if self.node.neighbors[direction] is not None:
-                return True
+            if self.name in self.node.access[direction]:
+                if self.node.neighbors[direction] is not None:
+                    return True
         return False
 
     def get_new_target(self, direction):

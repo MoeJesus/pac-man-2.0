@@ -11,6 +11,7 @@ class Pacman(Entity):
         self.entity_image = [0, 16]  # u, v
         self.direction = LEFT
         self.set_between_nodes(LEFT)
+        self.alive = True
 
     # Checks to see if a key is inputted for movement
     def get_valid_key(self):
@@ -41,6 +42,17 @@ class Pacman(Entity):
 
     def collide_ghost(self, ghost):
         return self.collide_check(ghost)
+
+    # If pacman dies, these functions will run
+    def die(self):
+        self.alive = False
+        self.direction = STOP
+
+    def reset(self):
+        Entity.reset(self)
+        self.direction = LEFT
+        self.set_between_nodes(LEFT)
+        self.alive = True
 
     def update(self):
         self.position += self.directions[self.direction] * self.speed

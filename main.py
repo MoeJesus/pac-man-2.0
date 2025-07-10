@@ -12,6 +12,8 @@ class App:
         pyxel.init(SCREEN_WIDTH, SCREEN_HEIGHT, display_scale=2, title="Pac-Man", fps=60)
         pyxel.load("assets/resources.pyxres")
         self.start_game()
+        self.level = 0
+        self.lives = 5
         self.pause = Pause(True)
         self.fruit = None
         pyxel.run(self.update, self.draw)
@@ -30,7 +32,36 @@ class App:
         self.ghosts.inky.set_start_node(self.nodes.get_node_from_tiles(0+11.5, 3+14))
         self.ghosts.clyde.set_start_node(self.nodes.get_node_from_tiles(4+11.5, 3+14))
         self.ghosts.set_spawn_node(self.nodes.get_node_from_tiles(2+11.5, 3+14))
+        self.nodes.deny_home_access(self.pacman)
+        self.nodes.deny_home_access_list(self.ghosts)
+        self.nodes.deny_access_list(2+11.5, 3+14, LEFT, self.ghosts)
+        self.nodes.deny_access_list(2+11.5, 3+14, RIGHT, self.ghosts)
+        self.ghosts.inky.start_node.deny_access(RIGHT, self.ghosts.inky)
+        self.ghosts.clyde.start_node.deny_access(LEFT, self.ghosts.clyde)
+        self.nodes.deny_access_list(12, 14, UP, self.ghosts)
+        self.nodes.deny_access_list(15, 14, UP, self.ghosts)
+        self.nodes.deny_access_list(12, 26, UP, self.ghosts)
+        self.nodes.deny_access_list(15, 26, UP, self.ghosts)
 
+    def next_level(self):
+        self.show_entities()
+        self.level += 1
+        self.pause.paused = True
+        self.start_game()
+
+    def reset_level(self):
+        self.pause.paused = True
+        self.pacman.reset()
+        self.ghosts.reset()
+        self.fruit = None
+
+    def restart_game(self):
+        self.lives = 5
+        self.level = 0
+        self.pause.paused = True
+        self.fruit = None
+        self.start_game()
+    
     def show_entities(self):
         self.pacman.visible = True
         self.ghosts.show()
@@ -43,19 +74,27 @@ class App:
         if pyxel.btnp(pyxel.KEY_Q):
             pyxel.quit()
         elif pyxel.btnp(pyxel.KEY_SPACE):
-            self.pause.set_pause(player_paused=True)
-            if not self.pause.paused:
-                self.show_entities()
-            else:
-                self.hide_entities()
+            if self.pacman.alive:
+                self.pause.set_pause(player_paused=True)
+                if not self.pause.paused:
+                    self.show_entities()
+                else:
+                    self.hide_entities()
 
     def check_pellet_events(self):
         pellet = self.pacman.eat_pellets(self.pellets.pellet_list)
         if pellet:
             self.pellets.num_eaten += 1
+            if self.pellets.num_eaten == 30:
+                self.ghosts.inky.start_node.allow_access(RIGHT, self.ghosts.inky)
+            if self.pellets.num_eaten == 70:
+                self.ghosts.clyde.start_node.allow_access(LEFT, self.ghosts.clyde)
             self.pellets.pellet_list.remove(pellet)
             if pellet.name == POWER_PELLET:
                 self.ghosts.start_fright()
+            if self.pellets.is_empty():
+                self.hide_entities()
+                self.pause.set_pause(pause_time=180, func=self.next_level)
 
     def check_ghost_events(self):
         for ghost in self.ghosts:
@@ -65,6 +104,16 @@ class App:
                     ghost.visible = False
                     self.pause.set_pause(pause_time=60, func=self.show_entities)
                     ghost.start_spawn()
+                    self.nodes.allow_home_access(ghost)
+                elif ghost.mode.current is not SPAWN:
+                    if self.pacman.alive:
+                        self.lives -= 1
+                        self.pacman.die()
+                        self.ghosts.hide()
+                        if self.lives <= 0:
+                            self.pause.set_pause(pause_time=180, func=self.restart_game)
+                        else:
+                            self.pause.set_pause(pause_time=180, func=self.reset_level)
 
     def check_fruit_events(self):
         if self.pellets.num_eaten == 50 or self.pellets.num_eaten == 140:
@@ -134,4 +183,4 @@ class Pause():
 
 App()
 
-# https://pacmancode.com/level-advancing
+# https://pacmancode.com/text
