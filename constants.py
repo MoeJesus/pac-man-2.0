@@ -31,3 +31,61 @@ SCATTER = 0
 CHASE = 1
 FRIGHT = 2
 SPAWN = 3
+
+# Character list constants
+A = 0
+B = 1
+C = 2
+D = 3
+E = 4
+F = 5
+G = 6
+H = 7
+I = 8
+J = 9
+K = 10
+L = 11
+M = 12
+N = 13
+O = 14
+P = 15
+Q = 16
+R = 17
+S = 18
+T = 19
+U = 20
+V = 21
+W = 22
+X = 23
+Y = 24
+Z = 25
+EX = 26
+CR = 27
+PTS = 28
+N0 = 29
+N1 = 30
+N2 = 31
+N3 = 32
+N4 = 33
+N5 = 34
+N6 = 35
+N7 = 36
+N8 = 37
+N9 = 38
+BS = 39
+DASH = 40
+QM = 41
+
+# Character dictionary
+CHARACTERS = {
+    A:[128, 16, 8, 8], B:[136, 16, 8, 8], C:[144, 16, 8, 8], D:[152, 16, 8, 8], E:[160, 16, 8, 8], F:[168, 16, 8, 8], G:[176, 16, 8, 8], H:[184, 16, 8, 8], I:[192, 16, 8, 8], J:[200, 16, 8, 8], K:[208, 16, 8, 8], L:[216, 16, 8, 8], M:[224, 16, 8, 8], N:[232, 16, 8, 8], O:[240, 16, 8, 8],
+    P:[128, 24, 8, 8], Q:[136, 24, 8, 8], R:[144, 24, 8, 8], S:[152, 24, 8, 8], T:[160, 24, 8, 8], U:[168, 24, 8, 8], V:[176, 24, 8, 8], W:[184, 24, 8, 8], X:[192, 24, 8, 8], Y:[200, 24, 8, 8], Z:[208, 24, 8, 8], EX:[216, 24, 8, 8], CR:[224, 24, 8, 8], PTS:[232, 16, 12, 8],
+    N0:[128, 32, 8, 8], N1:[136, 32, 8, 8], N2:[144, 32, 8, 8], N3:[152, 32, 8, 8], N4:[160, 32, 8, 8], N5:[168, 32, 8, 8], N6:[176, 32, 8, 8], N7:[184, 32, 8, 8], N8:[192, 32, 8, 8], N9:[200, 32, 8, 8], BS:[208, 32, 8, 8], DASH:[216, 32, 8, 8], QM:[224, 32, 8, 8]
+}
+
+# Text constants
+SCORE = (CHARACTERS[S], CHARACTERS[C], CHARACTERS[O], CHARACTERS[R], CHARACTERS[E])
+LEVEL = (CHARACTERS[L], CHARACTERS[E], CHARACTERS[V], CHARACTERS[E], CHARACTERS[L])
+READY = (CHARACTERS[R], CHARACTERS[E], CHARACTERS[A], CHARACTERS[D], CHARACTERS[Y], CHARACTERS[EX])
+PAUSE = (CHARACTERS[P], CHARACTERS[A], CHARACTERS[U], CHARACTERS[S], CHARACTERS[E])
+GAMEOVER = (CHARACTERS[G], CHARACTERS[A], CHARACTERS[M], CHARACTERS[E], CHARACTERS[O], CHARACTERS[V], CHARACTERS[E], CHARACTERS[R])

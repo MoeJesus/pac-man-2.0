@@ -184,3 +184,4 @@ class Pause():
 App()
 
 # https://pacmancode.com/text
+# https://github.com/blinklet/learning-pyxel
