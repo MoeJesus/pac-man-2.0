@@ -5,6 +5,7 @@ from nodes import NodeGroup
 from pellets import PelletGroup
 from ghosts import GhostGroup
 from fruit import Fruit
+from text import TextGroup
 
 
 class App:
@@ -16,6 +17,7 @@ class App:
         self.lives = 5
         self.pause = Pause(True)
         self.fruit = None
+        self.text_group = TextGroup()
         pyxel.run(self.update, self.draw)
 
     def start_game(self):
@@ -54,6 +56,7 @@ class App:
         self.pacman.reset()
         self.ghosts.reset()
         self.fruit = None
+        self.text_group.show_text(READYTXT)
 
     def restart_game(self):
         self.lives = 5
@@ -61,6 +64,7 @@ class App:
         self.pause.paused = True
         self.fruit = None
         self.start_game()
+        self.text_group.show_text(READYTXT)
     
     def show_entities(self):
         self.pacman.visible = True
@@ -77,8 +81,10 @@ class App:
             if self.pacman.alive:
                 self.pause.set_pause(player_paused=True)
                 if not self.pause.paused:
+                    self.text_group.hide_text()
                     self.show_entities()
                 else:
+                    self.text_group.show_text(PAUSETXT)
                     self.hide_entities()
 
     def check_pellet_events(self):
@@ -111,6 +117,7 @@ class App:
                         self.pacman.die()
                         self.ghosts.hide()
                         if self.lives <= 0:
+                            self.text_group.show_text(GAMEOVERTXT)
                             self.pause.set_pause(pause_time=180, func=self.restart_game)
                         else:
                             self.pause.set_pause(pause_time=180, func=self.reset_level)
@@ -138,6 +145,7 @@ class App:
         after_pause = self.pause.update()
         if after_pause is not None:
             after_pause()
+        self.text_group.update()
         self.check_events()
 
     def draw(self):
@@ -149,6 +157,7 @@ class App:
             self.fruit.draw()
         self.pacman.draw()
         self.ghosts.draw()
+        self.text_group.draw()
 
 
 # Adds the ability to pause the game
