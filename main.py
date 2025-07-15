@@ -17,6 +17,8 @@ class App:
         self.lives = 5
         self.pause = Pause(True)
         self.fruit = None
+        self.score = 0
+        self.printed_score = [0] * 8
         self.text_group = TextGroup()
         pyxel.run(self.update, self.draw)
 
@@ -91,6 +93,7 @@ class App:
         pellet = self.pacman.eat_pellets(self.pellets.pellet_list)
         if pellet:
             self.pellets.num_eaten += 1
+            self.update_score(pellet.points)
             if self.pellets.num_eaten == 30:
                 self.ghosts.inky.start_node.allow_access(RIGHT, self.ghosts.inky)
             if self.pellets.num_eaten == 70:
@@ -131,6 +134,10 @@ class App:
                 self.fruit = None
             elif self.fruit.destroy:
                 self.fruit = None
+
+    def update_score(self, points):
+        self.score += points
+        self.text_group.update_score(self.printed_score)
 
     def update(self):
         if not self.pause.paused:
