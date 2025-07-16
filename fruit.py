@@ -14,6 +14,27 @@ class Fruit(Entity):
         self.entity_image = [0, 112]
         self.set_between_nodes(RIGHT)
 
+    def check_points(self, points):
+        if points == 100:
+            FRUIT_POINTS.clear()
+            FRUIT_POINTS.append(CHARACTERS[P100])
+        elif points == 300:
+            FRUIT_POINTS.clear()
+            FRUIT_POINTS.append(CHARACTERS[P300])
+        elif points == 700:
+            FRUIT_POINTS.clear()
+            FRUIT_POINTS.append(CHARACTERS[P700])
+        elif points == 1000:
+            FRUIT_POINTS.clear()
+            FRUIT_POINTS.append(CHARACTERS[P1000])
+        elif points == 2000:
+            FRUIT_POINTS.clear()
+            FRUIT_POINTS.append(CHARACTERS[P2000])
+        else:
+            FRUIT_POINTS.clear()
+            FRUIT_POINTS.append(CHARACTERS[P3000])
+        return FRUIT_POINTS
+
     def update(self):
         self.timer += 1
         if self.timer >= self.lifespan:

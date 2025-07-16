@@ -3,11 +3,13 @@ from vector import Vector2
 from constants import *
 
 class Text(object):
-    def __init__(self, text, x, y, color=WHITE, flash=False, id=None, visible=True):
+    def __init__(self, text, x, y, color=WHITE, flash=False, time=None, id=None, visible=True):
         self.text = text
         self.position = Vector2(x, y)
         self.color = color
         self.flash = flash
+        self.timer = 0
+        self.lifespan = time
         self.id = id
         self.visible = visible
         self.destroy = False
@@ -18,6 +20,13 @@ class Text(object):
                 self.visible = False
             if pyxel.frame_count % 32 >= 16:
                 self.visible = True
+
+        if self.lifespan is not None:
+            self.timer += 1
+            if self.timer >= self.lifespan:
+                self.timer = 0
+                self.lifespan = None
+                self.destroy = True
 
     def draw(self):
         if self.visible:
@@ -39,9 +48,9 @@ class TextGroup(object):
         self.setup_text()
         self.show_text(READYTXT)
 
-    def add_text(self, text, x, y, color=WHITE, flash=False, id=None):
+    def add_text(self, text, x, y, color=WHITE, flash=False, time=None, id=None):
         self.next_id += 1
-        self.all_text[self.next_id] = Text(text, x, y, color=WHITE, flash=flash, id=id)
+        self.all_text[self.next_id] = Text(text, x, y, color=WHITE, flash=flash, time=time, id=id)
         return self.next_id
 
     def remove_text(self, id):
@@ -51,7 +60,9 @@ class TextGroup(object):
         self.all_text[READYTXT] = Text(READY, 11*TILE_WIDTH, 20*TILE_HEIGHT, YELLOW, visible=False)
         self.all_text[PAUSETXT] = Text(PAUSE, 10.5*TILE_WIDTH, 20*TILE_HEIGHT, YELLOW, visible=False)
         self.all_text[GAMEOVERTXT] = Text(GAMEOVER, 9*TILE_WIDTH, 20*TILE_HEIGHT, YELLOW, visible=False)
-        self.all_text[SCORETXT] = Text(SCORE_ARRAY, 16, 8)
+        self.all_text[TEMP_SCORETXT] = Text(TEMP_SCORE, 5*TILE_WIDTH, TILE_HEIGHT)
+        self.all_text[SCORETXT] = Text(SCORE_DICT, 7*TILE_WIDTH, TILE_HEIGHT)
+        self.all_text[HIGHSCORETXT] = Text(HIGH_SCORE_DICT, 15*TILE_WIDTH, TILE_HEIGHT)
         self.add_text(PLAYER_1, 3*TILE_WIDTH, 0, flash=True)
         self.add_text(HIGH_SCORE, 9*TILE_WIDTH, 0)
 
@@ -64,28 +75,30 @@ class TextGroup(object):
         self.hide_text()
         self.all_text[id].visible = True
 
-    def update_score(self, score_array):
-        for i in range(len(score_array)):
-            if score_array[i] == 1:
-                SCORE_ARRAY[i] = CHARACTERS[N1]
-            elif score_array[i] == 2:
-                SCORE_ARRAY[i] = CHARACTERS[N2]
-            elif score_array[i] == 3:
-                SCORE_ARRAY[i] = CHARACTERS[N3]
-            elif score_array[i] == 4:
-                SCORE_ARRAY[i] = CHARACTERS[N4]
-            elif score_array[i] == 5:
-                SCORE_ARRAY[i] = CHARACTERS[N5]
-            elif score_array[i] == 6:
-                SCORE_ARRAY[i] = CHARACTERS[N6]
-            elif score_array[i] == 7:
-                SCORE_ARRAY[i] = CHARACTERS[N7]
-            elif score_array[i] == 8:
-                SCORE_ARRAY[i] = CHARACTERS[N8]
-            elif score_array[i] == 9:
-                SCORE_ARRAY[i] = CHARACTERS[N9]
-            else:
-                SCORE_ARRAY[i] = CHARACTERS[N0]
+    def update_score(self, score_dict):
+        for i in range(len(score_dict)):
+            if score_dict[i] == 1:
+                SCORE_DICT[i] = CHARACTERS[N1]
+            elif score_dict[i] == 2:
+                SCORE_DICT[i] = CHARACTERS[N2]
+            elif score_dict[i] == 3:
+                SCORE_DICT[i] = CHARACTERS[N3]
+            elif score_dict[i] == 4:
+                SCORE_DICT[i] = CHARACTERS[N4]
+            elif score_dict[i] == 5:
+                SCORE_DICT[i] = CHARACTERS[N5]
+            elif score_dict[i] == 6:
+                SCORE_DICT[i] = CHARACTERS[N6]
+            elif score_dict[i] == 7:
+                SCORE_DICT[i] = CHARACTERS[N7]
+            elif score_dict[i] == 8:
+                SCORE_DICT[i] = CHARACTERS[N8]
+            elif score_dict[i] == 9:
+                SCORE_DICT[i] = CHARACTERS[N9]
+            elif score_dict[i] == 0:
+                SCORE_DICT[i] = CHARACTERS[N0]
+        self.all_text[SCORETXT].position.x = 56 - len(score_dict) * 8
+        self.all_text[TEMP_SCORETXT].destroy
 
     def update(self):
         for tkey in list(self.all_text.keys()):
@@ -94,5 +107,5 @@ class TextGroup(object):
                 self.remove_text(tkey)
 
     def draw(self):
-        for tkey in list(self.all_text.keys()):
+        for tkey in self.all_text:
             self.all_text[tkey].draw()

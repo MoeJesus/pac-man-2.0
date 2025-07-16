@@ -139,6 +139,21 @@ class GhostGroup(object):
         for ghost in self:
             ghost.set_spawn_node(node)
 
+    def check_points(self, points):
+        if points == 200:
+            GHOST_POINTS.clear()
+            GHOST_POINTS.append(CHARACTERS[P200])
+        elif points == 400:
+            GHOST_POINTS.clear()
+            GHOST_POINTS.append(CHARACTERS[P400])
+        elif points == 800:
+            GHOST_POINTS.clear()
+            GHOST_POINTS.append(CHARACTERS[P800])
+        else:
+            GHOST_POINTS.clear()
+            GHOST_POINTS.append(CHARACTERS[P1600])
+        return GHOST_POINTS
+
     def update_points(self):
         for ghost in self:
             ghost.points *= 2

@@ -18,7 +18,7 @@ class App:
         self.pause = Pause(True)
         self.fruit = None
         self.score = 0
-        self.printed_score = [0] * 8
+        self.printed_score = {}
         self.text_group = TextGroup()
         pyxel.run(self.update, self.draw)
 
@@ -65,8 +65,10 @@ class App:
         self.level = 0
         self.pause.paused = True
         self.fruit = None
-        self.start_game()
+        self.score = 0
+        self.text_group.update_score(self.score)
         self.text_group.show_text(READYTXT)
+        self.start_game()
     
     def show_entities(self):
         self.pacman.visible = True
@@ -111,6 +113,9 @@ class App:
                 if ghost.mode.current is FRIGHT:
                     self.pacman.visible = False
                     ghost.visible = False
+                    self.update_score(ghost.points)
+                    self.text_group.add_text(self.ghosts.check_points(ghost.points), ghost.position.x - 4, ghost.position.y, time = 60)
+                    self.ghosts.update_points()
                     self.pause.set_pause(pause_time=60, func=self.show_entities)
                     ghost.start_spawn()
                     self.nodes.allow_home_access(ghost)
@@ -131,12 +136,16 @@ class App:
                 self.fruit = Fruit(self.nodes.get_node_from_tiles(9, 20))
         if self.fruit is not None:
             if self.pacman.collide_check(self.fruit):
+                self.update_score(self.fruit.points)
+                self.text_group.add_text(self.fruit.check_points(self.fruit.points), self.fruit.position.x - 4, self.fruit.position.y, time = 60)
                 self.fruit = None
             elif self.fruit.destroy:
                 self.fruit = None
 
     def update_score(self, points):
         self.score += points
+        for i in range(len(str(self.score))):
+            self.printed_score[i] = (self.score // (10**(len(str(self.score)) - i - 1))) % 10
         self.text_group.update_score(self.printed_score)
 
     def update(self):
@@ -160,11 +169,11 @@ class App:
         #self.nodes.draw()
         pyxel.bltm(0, 0, 0, 0, 0, pyxel.width, pyxel.height, 0)
         self.pellets.draw()
+        self.text_group.draw()
         if self.fruit is not None:
             self.fruit.draw()
         self.pacman.draw()
         self.ghosts.draw()
-        self.text_group.draw()
 
 
 # Adds the ability to pause the game
