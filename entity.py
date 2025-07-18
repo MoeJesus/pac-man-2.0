@@ -128,27 +128,31 @@ class Entity(object):
         if self.visible:
             if self.name == PACMAN:
                 sprite_x = pyxel.frame_count // 4 % 4 * 16
-            if self.direction == UP:
-                if self.name == PACMAN:
-                    sprite_y = 32
-                else:
-                    sprite_x = ((pyxel.frame_count // 8 % 2) + 2) * 16
-            elif self.direction == DOWN:
-                if self.name == PACMAN:
-                    sprite_y = 32
-                    height = height * -1
-                else:
-                    sprite_x = ((pyxel.frame_count // 8 % 2) + 4) * 16
-            elif self.direction == LEFT:
-                if self.name != PACMAN:
-                    sprite_x = pyxel.frame_count // 8 % 2 * 16
-                width = width * -1
-            elif self.direction == RIGHT:
-                if self.name != PACMAN:
-                    sprite_x = pyxel.frame_count // 8 % 2 * 16
-            elif self.direction == STOP:
-                if self.name == PACMAN:
-                    sprite_x = 48
-                    sprite_y = 16
+            if (self.name != PACMAN and self.name != FRUIT) and self.mode.current == FRIGHT:
+                sprite_x = ((pyxel.frame_count // 8 % 2) + 6) * 16
+                sprite_y = 48
+            else:
+                if self.direction == UP:
+                    if self.name == PACMAN:
+                        sprite_y = 32
+                    else:
+                        sprite_x = ((pyxel.frame_count // 8 % 2) + 2) * 16
+                elif self.direction == DOWN:
+                    if self.name == PACMAN:
+                        sprite_y = 32
+                        height = height * -1
+                    else:
+                        sprite_x = ((pyxel.frame_count // 8 % 2) + 4) * 16
+                elif self.direction == LEFT:
+                    if self.name != PACMAN:
+                        sprite_x = pyxel.frame_count // 8 % 2 * 16
+                    width = width * -1
+                elif self.direction == RIGHT:
+                    if self.name != PACMAN:
+                        sprite_x = pyxel.frame_count // 8 % 2 * 16
+                elif self.direction == STOP:
+                    if self.name == PACMAN:
+                        sprite_x = 48
+                        sprite_y = 16
 
             pyxel.blt(self.position.x-(TILE_WIDTH/2), self.position.y-(TILE_WIDTH/2), 0, sprite_x, sprite_y, width, height, 0)

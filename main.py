@@ -66,7 +66,9 @@ class App:
         self.pause.paused = True
         self.fruit = None
         self.score = 0
-        self.text_group.update_score(self.score)
+        self.printed_score.clear()
+        SCORE_DICT.clear()
+        self.text_group.update_score(self.printed_score)
         self.text_group.show_text(READYTXT)
         self.start_game()
     
